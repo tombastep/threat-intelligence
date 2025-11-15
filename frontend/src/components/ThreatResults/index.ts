@@ -1,0 +1,1 @@
+export { ThreatResults } from './ThreatResults'
