@@ -18,6 +18,7 @@ interface ThreatLookupSearchbarProps {
   onCompareHistory: (entry: HistoryEntry) => void // For history dropdown
   hasCurrentResult: boolean // Show compare button when true
   currentIp?: string | null // Current IP being viewed
+  compareIp?: string | null // Comparison IP being viewed
 }
 
 export function ThreatLookupSearchbar({
@@ -29,6 +30,7 @@ export function ThreatLookupSearchbar({
   onCompareHistory,
   hasCurrentResult,
   currentIp,
+  compareIp,
 }: ThreatLookupSearchbarProps) {
   const {
     register,
@@ -138,6 +140,7 @@ export function ThreatLookupSearchbar({
           onClose={() => setIsDropdownOpen(false)}
           hasCurrentResult={hasCurrentResult}
           currentIp={currentIp}
+          compareIp={compareIp}
         />
       </div>
       {errors.ip && (

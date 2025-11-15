@@ -11,7 +11,8 @@ import { ErrorMessage } from '@/components/ui/ErrorMessage'
 export function ThreatLookupPage() {
   const { mutate, data, isPending, error, reset } = useThreatLookup()
   const { history, addEntry, clearHistory } = useSearchHistory()
-  const { ips, ip, compareIp, addIp, removeIpAtIndex, clearAll } = useUrlState()
+  const { ips, ip, compareIp, addIp, setCompareIp, removeIpAtIndex, clearAll } =
+    useUrlState()
 
   const {
     mutate: mutateCompare,
@@ -44,13 +45,15 @@ export function ThreatLookupPage() {
   }, [compareData, addEntry])
 
   const handleLookup = (lookupIp: string) => {
+    clearAll()
     addIp(lookupIp)
     mutate(lookupIp)
+    resetCompare()
   }
 
   const handleCompare = (comparisonIp: string) => {
     if (ip && ip !== comparisonIp) {
-      addIp(comparisonIp)
+      setCompareIp(comparisonIp)
       mutateCompare(comparisonIp)
     }
   }
@@ -65,7 +68,7 @@ export function ThreatLookupPage() {
 
   const handleCompareHistory = (entry: HistoryEntry) => {
     if (entry.data && ip && entry.ip !== ip) {
-      addIp(entry.ip)
+      setCompareIp(entry.ip)
       mutateCompare(entry.ip)
     }
   }
@@ -106,16 +109,16 @@ export function ThreatLookupPage() {
                 alt="Threat Intelligence"
                 className="w-7 h-7 md:w-8 md:h-8"
               />
-              Threat Intelligence Dashboard
+              Threat Intelligence
             </h1>
             {(ip || compareIp) && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-sm font-medium text-gray-400 whitespace-nowrap">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <span className="sm:inline text-xs sm:text-sm font-medium text-gray-400 whitespace-nowrap">
                   Analyzing:
                 </span>
                 {ip && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 border border-gray-300 rounded-lg">
-                    <code className="text-sm font-semibold text-gray-700">
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 bg-gray-100 border border-gray-300 rounded-lg">
+                    <code className="text-xs sm:text-sm font-semibold text-gray-700">
                       {ip}
                     </code>
                     <button
@@ -124,7 +127,7 @@ export function ThreatLookupPage() {
                       aria-label="Clear main IP"
                     >
                       <svg
-                        className="w-4 h-4"
+                        className="w-3 h-3 sm:w-4 sm:h-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -140,8 +143,8 @@ export function ThreatLookupPage() {
                   </div>
                 )}
                 {compareIp && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 border border-gray-300 rounded-lg">
-                    <code className="text-sm font-semibold text-gray-700">
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 bg-gray-100 border border-gray-300 rounded-lg">
+                    <code className="text-xs sm:text-sm font-semibold text-gray-700">
                       {compareIp}
                     </code>
                     <button
@@ -150,7 +153,7 @@ export function ThreatLookupPage() {
                       aria-label="Clear comparison IP"
                     >
                       <svg
-                        className="w-4 h-4"
+                        className="w-3 h-3 sm:w-4 sm:h-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -179,6 +182,7 @@ export function ThreatLookupPage() {
               onCompareHistory={handleCompareHistory}
               hasCurrentResult={!!data}
               currentIp={ip}
+              compareIp={compareIp}
             />
           </div>
         </div>

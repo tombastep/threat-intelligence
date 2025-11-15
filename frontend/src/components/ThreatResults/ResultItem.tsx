@@ -18,7 +18,7 @@ export function ResultItem({ data, isSingleView = false }: ResultItemProps) {
 
   const headerClasses = isSingleView
     ? 'flex flex-wrap items-center gap-3'
-    : 'flex flex-col md:flex-row items-center gap-3 w-full'
+    : 'min-w-0 flex flex-col md:flex-row items-center gap-3 w-full'
 
   const titleClasses = isSingleView
     ? 'text-lg md:text-2xl font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis'
@@ -31,7 +31,7 @@ export function ResultItem({ data, isSingleView = false }: ResultItemProps) {
       {/* Header */}
       <div className={headerClasses}>
         <div
-          className={`flex-1 min-w-${isSingleView ? 'fit' : '0'} ${isSingleView ? '' : 'flex flex-col gap-1'}`}
+          className={`w-full flex-1 min-w-${isSingleView ? 'fit' : '0'} ${isSingleView ? '' : 'flex flex-col gap-1'}`}
         >
           <h2 className={titleClasses}>{data.ip}</h2>
           {data.hostname && (

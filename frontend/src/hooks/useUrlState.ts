@@ -127,11 +127,37 @@ export function useUrlState() {
     setUrlState({ ips: [] })
   }, [])
 
+  const setCompareIp = useCallback((ip: string) => {
+    // Validate IP before setting
+    if (!isValidIp(ip)) {
+      return
+    }
+
+    setUrlState((prev) => {
+      const newIps = [...prev.ips]
+
+      // Ensure we have at least one IP (primary)
+      if (newIps.length === 0) {
+        return { ips: [] } // Can't set compare IP without primary
+      }
+
+      // Replace IP at index 1, or add it if it doesn't exist
+      if (newIps.length > 1) {
+        newIps[1] = ip
+      } else {
+        newIps.push(ip)
+      }
+
+      return { ips: newIps }
+    })
+  }, [])
+
   return {
     ips: urlState.ips,
     ip: urlState.ips[0] || null, // Primary IP
     compareIp: urlState.ips[1] || null, // Comparison IP
     addIp,
+    setCompareIp,
     removeIp,
     removeIpAtIndex,
     clearAll,
